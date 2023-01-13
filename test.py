@@ -10,6 +10,10 @@ class pet():
     def __init__(self):
         # create a window
         self.window = tk.Tk()
+        self.screen_width = self.window.winfo_screenwidth()
+        self.screen_height = self.window.winfo_screenheight()
+        self.curr_dir_y = "Down"
+        self.curr_dir_x = "Right"
 
         # finding attributes of placeholder image
         self.imageLink = 'graphics/cat_idle.gif'
@@ -17,6 +21,7 @@ class pet():
         self.frame = self.image.n_frames
         self.width = self.image.width
         self.height = self.image.height
+        
 
         # placeholder image
         # change: switch frame rates 
@@ -72,16 +77,34 @@ class pet():
         self.window.mainloop()
 
     def update(self):
-        # move right by one pixel
-        self.x += 1
 
-        # def move(num):
-        #   if (self.x < 600):
-        #     return num + 1
-        #   else:
-        #     return num - 1
-        # # move down by one pixel
-        self.y += 1
+        def bounce_x(num, dir):
+          if (dir == "Right"):
+            if (num + 1 >= self.screen_width - self.width):
+              dir = "Left"
+            return (num + 1, dir)
+          else:
+            if (num - 1 <= 0):
+              dir = "Right"
+            return (num - 1, dir)
+
+        new_x, new_dir = bounce_x(self.x, self.curr_dir_x)
+        self.curr_dir_x = new_dir
+        self.x = new_x
+
+        def bounce_y(num, dir):
+          if (dir == "Down"):
+            if (num + 1 >= self.screen_height - self.height):
+              dir = "Up"
+            return (num + 1, dir)
+          else:
+            if (num - 1 <= 0):
+              dir = "Down"
+            return (num - 1, dir)
+        
+        new_y, new_dir = bounce_y(self.y, self.curr_dir_y)
+        self.curr_dir_y = new_dir
+        self.y = new_y
 
         # advance frame if 50ms have passed
         if time.time() > self.timestamp + 0.05:
@@ -97,7 +120,7 @@ class pet():
         # give window to geometry manager (so it will appear)
         self.label.pack()
 
-        # call update after 10ms
-        self.window.after(50, self.update)
+        # call update after 20ms
+        self.window.after(20, self.update)
 
 pet()
