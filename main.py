@@ -1,101 +1,166 @@
-import random
 import tkinter as tk
+import time
+import random
+from PIL import Image
+import math
+import datetime
 
-x = 1400
-cycle = 0
-check = 1
-idle_num =[1,2,3,4]
-sleep_num = [10,11,12,13,15]
-walk_left = [6,7]
-walk_right = [8,9]
-event_number = random.randrange(1,3,1)
-impath = 'graphics/'
 
-#transfer random no. to event
-def event(cycle,check,event_number,x):
-    if event_number in idle_num:
-        check = 0
-        print('idle')
-        window.after(400,update,cycle,check,event_number,x) #no. 1,2,3,4 = idle
-    elif event_number == 5:
-        check = 1
-        print('from idle to sleep')
-        window.after(100,update,cycle,check,event_number,x) #no. 5 = idle to sleep
-    elif event_number in walk_left:
-        check = 4
-        print('walking towards left')
-        window.after(100,update,cycle,check,event_number,x)#no. 6,7 = walk towards left
-    elif event_number in walk_right:
-        check = 5
-        print('walking towards right')
-        window.after(100,update,cycle,check,event_number,x)#no 8,9 = walk towards right
-    elif event_number in sleep_num:
-        check  = 2
-        print('sleep')
-        window.after(1000,update,cycle,check,event_number,x)#no. 10,11,12,13,15 = sleep
-    elif event_number == 14:
-        check = 3
-        print('from sleep to idle')
-        window.after(100,update,cycle,check,event_number,x)#no. 15 = sleep to idle
-
-#making gif work 
-def gif_work(cycle,frames,event_number,first_num,last_num):
-    if cycle < len(frames) -1:
-        cycle+=1
-    else:
-        cycle = 0
-        event_number = random.randrange(first_num,last_num+1,1)
-
-    return cycle, event_number
-
-def update(cycle,check,event_number,x):
-    #idle
-    if check ==0:
-        frame = idle[cycle]
-        cycle, event_number = gif_work(cycle,idle,event_number,1,9)
+class pet():
   
-    #idle to sleep
-    elif check ==1:
-        frame = idle_to_sleep[cycle]
-        cycle ,event_number = gif_work(cycle,idle_to_sleep,event_number,10,10)
-    #sleep
-    elif check == 2:
-        frame = sleep[cycle]
-        cycle ,event_number = gif_work(cycle,sleep,event_number,10,15)
-    #sleep to idle
-    elif check ==3:
-        frame = sleep_to_idle[cycle]
-        cycle ,event_number = gif_work(cycle,sleep_to_idle,event_number,1,1)
-        pass
-    #walk toward left
-    elif check == 4:
-        frame = walk_positive[cycle]
-        cycle , event_number = gif_work(cycle,walk_positive,event_number,1,9)
-        x -= 3
-    #walk towards right
-    elif check == 5:
-        frame = walk_negative[cycle]
-        cycle , event_number = gif_work(cycle,walk_negative,event_number,1,9)
-        x -= -3
-        window.geometry('100x100+'+str(x)+'+1050')
-        label.configure(image=frame)
-        window.after(1,event,cycle,check,event_number,x)
+    def __init__(self, x, y, duration, count):
+        # create a window
+        self.window = tk.Tk()
+        self.screen_width = self.window.winfo_screenwidth()
+        self.screen_height = self.window.winfo_screenheight()
+        self.curr_dir_y = "Down"
+        self.curr_dir_x = "Right"
+        self.duration = duration
+
+        #to loop through gif array
+        self.gif_arr = [ \
+          "graphics/xw.gif", "graphics/DEv.gif", "graphics/idle.gif", \
+          "graphics/idle_to_sleep.gif", "graphics/Pvu.gif", "graphics/walking_negative.gif"]
+        self.gif_counter = count
+
+        # finding attributes of placeholder image
+        self.imageLink = self.gif_arr[count]
+        self.image = Image.open(self.imageLink)
+        self.frame = self.image.n_frames
+        self.width = self.image.width
+        self.height = self.image.height
+        
+
+        # placeholder image
+        # change: switch frame rates 
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.frame)]
+        self.frame_index = 0
+        self.img = self.walking_right[self.frame_index]
+
+        # finding attributes of new image
+        self.new_imageLink = 'graphics/Pvu.gif'
+        self.new_image = Image.open(self.new_imageLink)
+        self.new_frame = self.new_image.n_frames
+
+        # new image
+        self.new_img = [tk.PhotoImage(file=self.new_imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.new_frame)][0]
+
+        # timestamp to check whether to advance frame
+        self.timestamp = time.time()
+
+        # set focushighlight to black when the window does not have focus
+        self.window.config(highlightbackground='black')
+
+        # make window frameless
+        self.window.overrideredirect(True)
+
+        # make window draw over all others
+        self.window.attributes('-topmost', True)
+
+        # turn black into transparency
+        self.window.wm_attributes('-topmost', 'true')
+
+        # create a label as a container for our image
+        self.label = tk.Label(self.window, bd=0, bg='black')
+
+        # create a window of size 128x128 pixels, at coordinates 0,0
+        self.x = x
+        self.y = y
+        self.window.geometry('{width}x{height}+{x}+{y}'.format(width=str(self.width), height=str(self.height), x=str(self.x), y=str(self.y)))
+        # add the image to our label
+        self.label.configure(image=self.img)
 
 
-window = tk.Tk()
-#call buddy's action gif
-idle = [tk.PhotoImage(file=impath+'idle.gif',format = 'gif -index %i' %(i)) for i in range(5)]#idle gif
-idle_to_sleep = [tk.PhotoImage(file=impath+'idle_to_sleep.gif',format = 'gif -index %i' %(i)) for i in range(4)]#idle to sleep gif
-sleep = [tk.PhotoImage(file=impath+'sleep.gif',format = 'gif -index %i' %(i)) for i in range(3)]#sleep gif
-sleep_to_idle = [tk.PhotoImage(file=impath+'sleep_to_idle.gif',format = 'gif -index %i' %(i)) for i in range(4)]#sleep to idle gif
-walk_positive = [tk.PhotoImage(file=impath+'walking_positive.gif',format = 'gif -index %i' %(i)) for i in range(8)]#walk to left gif
-walk_negative = [tk.PhotoImage(file=impath+'walking_negative.gif',format = 'gif -index %i' %(i)) for i in range(8)]#walk to right gif
-#window configuration
-window.config(highlightbackground='black')
-label = tk.Label(window,bd=0,bg='black')
-window.overrideredirect(True)
-# window.wm_attributes('-transparentcolor','black')
-label.pack()
-#loop the program
-window.after(1,update,cycle,check,event_number,x)
-window.mainloop()
+        #onclick functions
+        def on_click_duplicate():
+          self.window.attributes('-alpha', 0.0)
+          pet(random.randint(0, self.screen_width), \
+            random.randint(0, self.screen_height), \
+            random.randint(0, 10), \
+            random.randint(0, len(self.gif_arr) - 1))
+          # self.window.after(10000, self.window.attributes("-alpha", 1.0))
+          # self.label.configure(image=self.new_img)
+
+        def on_click_disappear():
+          self.window.attributes('-alpha', 0.0)
+          # self.window.after(10000, self.window.attributes("-alpha", 1.0))
+          # self.label.configure(image=self.new_img)
+
+        self.label.bind("<Button-1>", lambda e,:on_click_duplicate())
+        self.label.bind("<Double-Button-1>", lambda e,:on_click_disappear())
+
+        # give window to geometry manager (so it will appear)
+        self.label.pack()
+
+        # run self.update() after 0ms when mainloop starts
+        self.window.after(0, self.update)
+        self.window.after(10000, self.change_gif)
+        self.window.after(1000, self.bring_gif_back)
+        self.window.mainloop()
+
+    def update(self):
+
+        def bounce_x(num, dir):
+          if (dir == "Right"):
+            if (num + 1 >= self.screen_width - self.width):
+              dir = "Left"
+            return (num + 1, dir)
+          else:
+            if (num - 1 <= 0):
+              dir = "Right"
+            return (num - 1, dir)
+
+        new_x, new_dir = bounce_x(self.x, self.curr_dir_x)
+        self.curr_dir_x = new_dir
+        self.x = new_x
+
+        def bounce_y(num, dir):
+          if (dir == "Down"):
+            if (num + 1 >= self.screen_height - self.height):
+              dir = "Up"
+            return (num + 1, dir)
+          else:
+            if (num - 1 <= 0):
+              dir = "Down"
+            return (num - 1, dir)
+        
+        new_y, new_dir = bounce_y(self.y, self.curr_dir_y)
+        self.curr_dir_y = new_dir
+        self.y = new_y
+
+        # advance frame if 50ms have passed
+        if time.time() > self.timestamp + 0.05:
+            self.timestamp = time.time()
+            # advance the frame by one, wrap back to 0 at the end
+            self.frame_index = (self.frame_index + 1) % self.frame
+            self.img = self.walking_right[self.frame_index]
+
+        # create the window
+        self.window.geometry('{width}x{height}+{x}+{y}'.format(width=str(self.width), height=str(self.height), x=str(self.x), y=str(self.y)))
+        # add the image to our label
+        self.label.configure(image=self.img)
+        # give window to geometry manager (so it will appear)
+        self.label.pack()
+
+        # call update after 20ms
+        self.window.after(self.duration, self.update)
+
+    def change_gif(self):
+        self.imageLink = self.gif_arr[self.gif_counter]
+        self.gif_counter = (self.gif_counter + 1) % (len(self.gif_arr) - 1)
+        self.image = Image.open(self.imageLink)
+        self.frame = self.image.n_frames
+        self.width = self.image.width
+        self.height = self.image.height
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.frame)]
+        self.image = self.walking_right[0]
+        self.label.configure(image=self.image)
+        self.label.pack()
+        self.window.after(10000, self.change_gif)
+
+    def bring_gif_back(self):
+      self.window.attributes('-alpha', 1.0)
+      self.window.after(10000, self.bring_gif_back)
+
+if __name__ == "__main__":
+  pet(0, 0, 10, 0)
