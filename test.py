@@ -59,7 +59,7 @@ class pet():
         # create a window of size 128x128 pixels, at coordinates 0,0
         self.x = 0
         self.y = 0
-        self.window.geometry('140x140+{x}+{y}'.format(x=str(self.x), y=str(self.y)))
+        self.window.geometry('{width}x{height}+{x}+{y}'.format(width=str(self.width), height=str(self.height), x=str(self.x), y=str(self.y)))
         # add the image to our label
         self.label.configure(image=self.img)
 
@@ -122,7 +122,7 @@ class pet():
             self.img = self.walking_right[self.frame_index]
 
         # create the window
-        self.window.geometry('140x140+{x}+{y}'.format(x=str(self.x), y=str(self.y)))
+        self.window.geometry('{width}x{height}+{x}+{y}'.format(width=str(self.width), height=str(self.height), x=str(self.x), y=str(self.y)))
         # add the image to our label
         self.label.configure(image=self.img)
         # give window to geometry manager (so it will appear)
@@ -136,6 +136,8 @@ class pet():
         self.gif_counter = (self.gif_counter + 1) % (len(self.gif_arr) - 1)
         self.image = Image.open(self.imageLink)
         self.frame = self.image.n_frames
+        self.width = self.image.width
+        self.height = self.image.height
         self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
         self.image = self.walking_right[0]
         self.label.configure(image=self.image)
