@@ -26,7 +26,7 @@ class pet():
 
         # placeholder image
         # change: switch frame rates 
-        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.frame)]
         self.frame_index = 0
         self.img = self.walking_right[self.frame_index]
 
@@ -36,7 +36,7 @@ class pet():
         self.new_frame = self.new_image.n_frames
 
         # new image
-        self.new_img = [tk.PhotoImage(file=self.new_imageLink, format='gif -index %i' % (i)) for i in range(self.new_frame)][0]
+        self.new_img = [tk.PhotoImage(file=self.new_imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.new_frame)][0]
 
         # timestamp to check whether to advance frame
         self.timestamp = time.time()
@@ -67,10 +67,11 @@ class pet():
         #onclick functions
         def on_click():
           self.window.attributes('-alpha', 0.0)
+          test_object = pet()
           # self.window.after(10000, self.window.attributes("-alpha", 1.0))
           # self.label.configure(image=self.new_img)
 
-        self.label.bind("<Button-1>", lambda e,:on_click())
+        self.label.bind("<Double-Button-1>", lambda e,:on_click())
 
         # give window to geometry manager (so it will appear)
         self.label.pack()
@@ -140,7 +141,7 @@ class pet():
         self.frame = self.image.n_frames
         self.width = self.image.width
         self.height = self.image.height
-        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i), master=self.window) for i in range(self.frame)]
         self.image = self.walking_right[0]
         self.label.configure(image=self.image)
         self.label.pack()
@@ -150,4 +151,5 @@ class pet():
       self.window.attributes('-alpha', 1.0)
       self.window.after(10000, self.bring_gif_back)
 
-pet()
+if __name__ == "__main__":
+  pet()
