@@ -8,13 +8,14 @@ import datetime
 
 class pet():
   
-    def __init__(self, x, y):
+    def __init__(self, x, y, duration):
         # create a window
         self.window = tk.Tk()
         self.screen_width = self.window.winfo_screenwidth()
         self.screen_height = self.window.winfo_screenheight()
         self.curr_dir_y = "Down"
         self.curr_dir_x = "Right"
+        self.duration = duration
 
         # finding attributes of placeholder image
         self.imageLink = 'graphics/Pvu.gif'
@@ -67,7 +68,7 @@ class pet():
         #onclick functions
         def on_click_duplicate():
           self.window.attributes('-alpha', 0.0)
-          pet(random.randint(0, self.screen_width), random.randint(0, self.screen_height))
+          pet(random.randint(0, self.screen_width), random.randint(0, self.screen_height), random.randint(0, 10))
           # self.window.after(10000, self.window.attributes("-alpha", 1.0))
           # self.label.configure(image=self.new_img)
 
@@ -138,7 +139,7 @@ class pet():
         self.label.pack()
 
         # call update after 20ms
-        self.window.after(10, self.update)
+        self.window.after(self.duration, self.update)
 
     def change_gif(self):
         self.imageLink = self.gif_arr[self.gif_counter]
@@ -158,4 +159,4 @@ class pet():
       self.window.after(10000, self.bring_gif_back)
 
 if __name__ == "__main__":
-  pet(0, 0)
+  pet(0, 0, 10)
