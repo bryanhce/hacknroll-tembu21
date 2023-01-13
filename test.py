@@ -3,6 +3,7 @@ import time
 import random
 from PIL import Image
 import math
+import datetime
 
 
 class pet():
@@ -67,8 +68,13 @@ class pet():
         # give window to geometry manager (so it will appear)
         self.label.pack()
 
+        #to loop through gif array
+        self.gif_arr = ["graphics/test.gif", "graphics/sleep.gif", "graphics/idle_to_sleep.gif", "graphics/cat_idle.gif"]
+        self.gif_counter = 0
+
         # run self.update() after 0ms when mainloop starts
         self.window.after(0, self.update)
+        self.window.after(1000, self.change_gif)
         self.window.mainloop()
 
     def update(self):
@@ -99,5 +105,17 @@ class pet():
 
         # call update after 10ms
         self.window.after(50, self.update)
+
+    def change_gif(self):
+        self.imageLink = self.gif_arr[self.gif_counter]
+        self.gif_counter = (self.gif_counter + 1) % (len(self.gif_arr) - 1)
+        print(len(self.gif_arr))
+        self.image = Image.open(self.imageLink)
+        self.frame = self.image.n_frames
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
+        self.image = self.walking_right[0]
+        self.label.configure(image=self.image)
+        self.label.pack()
+        self.window.after(1000, self.change_gif)
 
 pet()
