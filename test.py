@@ -8,7 +8,7 @@ import datetime
 
 class pet():
   
-    def __init__(self):
+    def __init__(self, x, y):
         # create a window
         self.window = tk.Tk()
         self.screen_width = self.window.winfo_screenwidth()
@@ -57,21 +57,27 @@ class pet():
         self.label = tk.Label(self.window, bd=0, bg='black')
 
         # create a window of size 128x128 pixels, at coordinates 0,0
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
         self.window.geometry('{width}x{height}+{x}+{y}'.format(width=str(self.width), height=str(self.height), x=str(self.x), y=str(self.y)))
         # add the image to our label
         self.label.configure(image=self.img)
 
 
         #onclick functions
-        def on_click():
+        def on_click_duplicate():
           self.window.attributes('-alpha', 0.0)
-          test_object = pet()
+          pet(random.randint(0, self.screen_width), random.randint(0, self.screen_height))
           # self.window.after(10000, self.window.attributes("-alpha", 1.0))
           # self.label.configure(image=self.new_img)
 
-        self.label.bind("<Double-Button-1>", lambda e,:on_click())
+        def on_click_disappear():
+          self.window.attributes('-alpha', 0.0)
+          # self.window.after(10000, self.window.attributes("-alpha", 1.0))
+          # self.label.configure(image=self.new_img)
+
+        self.label.bind("<Button-1>", lambda e,:on_click_duplicate())
+        self.label.bind("<Double-Button-1>", lambda e,:on_click_disappear())
 
         # give window to geometry manager (so it will appear)
         self.label.pack()
@@ -152,4 +158,4 @@ class pet():
       self.window.after(10000, self.bring_gif_back)
 
 if __name__ == "__main__":
-  pet()
+  pet(0, 0)
