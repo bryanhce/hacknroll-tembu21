@@ -17,7 +17,7 @@ class pet():
         self.curr_dir_x = "Right"
 
         # finding attributes of placeholder image
-        self.imageLink = 'graphics/cat_idle.gif'
+        self.imageLink = 'graphics/Pvu.gif'
         self.image = Image.open(self.imageLink)
         self.frame = self.image.n_frames
         self.width = self.image.width
@@ -31,7 +31,7 @@ class pet():
         self.img = self.walking_right[self.frame_index]
 
         # finding attributes of new image
-        self.new_imageLink = 'graphics/cat_headpat.gif'
+        self.new_imageLink = 'graphics/Pvu.gif'
         self.new_image = Image.open(self.new_imageLink)
         self.new_frame = self.new_image.n_frames
 
@@ -76,9 +76,8 @@ class pet():
         self.label.pack()
 
         #to loop through gif array
-        self.gif_arr = ["graphics/test.gif", \
-          "graphics/Pvu.gif", "graphics/Dev.gif", "graphics/idle.gif", \
-          "graphics/sleep_to_idle.gif", "graphics/cat_idle.gif"]
+        self.gif_arr = [ "graphics/xw.gif", "graphics/DEv.gif", "graphics/idle.gif", \
+          "graphics/idle_to_sleep.gif", "graphics/Pvu.gif", "graphics/walking_negative.gif"]
         self.gif_counter = 0
 
         # run self.update() after 0ms when mainloop starts
@@ -132,7 +131,7 @@ class pet():
         self.label.pack()
 
         # call update after 20ms
-        self.window.after(20, self.update)
+        self.window.after(10, self.update)
 
     def change_gif(self):
         self.imageLink = self.gif_arr[self.gif_counter]
