@@ -11,8 +11,8 @@ class pet():
         # create a window
         self.window = tk.Tk()
 
-        # finding attributes of image
-        self.imageLink = 'graphics/headpat.gif'
+        # finding attributes of placeholder image
+        self.imageLink = 'graphics/cat_idle.gif'
         self.image = Image.open(self.imageLink)
         self.frame = self.image.n_frames
         self.width = self.image.width
@@ -23,6 +23,14 @@ class pet():
         self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
         self.frame_index = 0
         self.img = self.walking_right[self.frame_index]
+
+        # finding attributes of new image
+        self.new_imageLink = 'graphics/cat_headpat.gif'
+        self.new_image = Image.open(self.new_imageLink)
+        self.new_frame = self.new_image.n_frames
+
+        # new image
+        self.new_img = [tk.PhotoImage(file=self.new_imageLink, format='gif -index %i' % (i)) for i in range(self.new_frame)][0]
 
         # timestamp to check whether to advance frame
         self.timestamp = time.time()
@@ -49,6 +57,13 @@ class pet():
         # add the image to our label
         self.label.configure(image=self.img)
 
+
+        #onclick functions
+        def on_click():
+          self.label.configure(image=self.new_img)
+
+        self.label.bind("<Button-1>", lambda e,:on_click())
+
         # give window to geometry manager (so it will appear)
         self.label.pack()
 
@@ -60,13 +75,13 @@ class pet():
         # move right by one pixel
         self.x += 1
 
-        def move(num):
-          if (num < 500):
-            return num + 1
-          else:
-            return num - 1
-        # move down by one pixel
-        self.y = move(self.y)
+        # def move(num):
+        #   if (self.x < 600):
+        #     return num + 1
+        #   else:
+        #     return num - 1
+        # # move down by one pixel
+        self.y += 1
 
         # advance frame if 50ms have passed
         if time.time() > self.timestamp + 0.05:
@@ -83,6 +98,6 @@ class pet():
         self.label.pack()
 
         # call update after 10ms
-        self.window.after(10, self.update)
+        self.window.after(50, self.update)
 
 pet()
