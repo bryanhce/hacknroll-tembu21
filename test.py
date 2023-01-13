@@ -66,7 +66,9 @@ class pet():
 
         #onclick functions
         def on_click():
-          self.label.configure(image=self.new_img)
+          self.window.attributes('-alpha', 0.0)
+          # self.window.after(10000, self.window.attributes("-alpha", 1.0))
+          # self.label.configure(image=self.new_img)
 
         self.label.bind("<Button-1>", lambda e,:on_click())
 
@@ -82,6 +84,7 @@ class pet():
         # run self.update() after 0ms when mainloop starts
         self.window.after(0, self.update)
         self.window.after(10000, self.change_gif)
+        self.window.after(1000, self.bring_gif_back)
         self.window.mainloop()
 
     def update(self):
@@ -143,5 +146,9 @@ class pet():
         self.label.configure(image=self.image)
         self.label.pack()
         self.window.after(10000, self.change_gif)
+
+    def bring_gif_back(self):
+      self.window.attributes('-alpha', 1.0)
+      self.window.after(10000, self.bring_gif_back)
 
 pet()
