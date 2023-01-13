@@ -1,14 +1,26 @@
 import tkinter as tk
 import time
 import random
+from PIL import Image
+import math
+
 
 class pet():
+  
     def __init__(self):
         # create a window
         self.window = tk.Tk()
 
+        # finding attributes of image
+        self.imageLink = 'graphics/headpat.gif'
+        self.image = Image.open(self.imageLink)
+        self.frame = self.image.n_frames
+        self.width = self.image.width
+        self.height = self.image.height
+
         # placeholder image
-        self.walking_right = [tk.PhotoImage(file='graphics/sleep.gif', format='gif -index %i' % (i)) for i in range(4)]
+        # change: switch frame rates 
+        self.walking_right = [tk.PhotoImage(file=self.imageLink, format='gif -index %i' % (i)) for i in range(self.frame)]
         self.frame_index = 0
         self.img = self.walking_right[self.frame_index]
 
@@ -32,8 +44,8 @@ class pet():
 
         # create a window of size 128x128 pixels, at coordinates 0,0
         self.x = 0
-        self.window.geometry('64x64+{x}+0'.format(x=str(self.x)))
-
+        self.y = 0
+        self.window.geometry('140x140+{x}+{y}'.format(x=str(self.x), y=str(self.y)))
         # add the image to our label
         self.label.configure(image=self.img)
 
@@ -48,15 +60,23 @@ class pet():
         # move right by one pixel
         self.x += 1
 
+        def move(num):
+          if (num < 500):
+            return num + 1
+          else:
+            return num - 1
+        # move down by one pixel
+        self.y = move(self.y)
+
         # advance frame if 50ms have passed
         if time.time() > self.timestamp + 0.05:
             self.timestamp = time.time()
             # advance the frame by one, wrap back to 0 at the end
-            self.frame_index = (self.frame_index + 1) % 4
+            self.frame_index = (self.frame_index + 1) % self.frame
             self.img = self.walking_right[self.frame_index]
 
         # create the window
-        self.window.geometry('64x64+{x}+0'.format(x=str(self.x)))
+        self.window.geometry('140x140+{x}+{y}'.format(x=str(self.x), y=str(self.y)))
         # add the image to our label
         self.label.configure(image=self.img)
         # give window to geometry manager (so it will appear)
