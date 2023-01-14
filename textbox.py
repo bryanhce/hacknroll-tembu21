@@ -98,5 +98,3 @@ class Textbox:
         self.database_dict.update(new_obj)
         json.dump(self.database_dict, f)
         f.close()
-
-Textbox()
