@@ -6,7 +6,7 @@ from PIL import Image
 
 class pet():
   
-    def __init__(self, x, y, duration, count):
+    def __init__(self, x, y, duration=5, count=0):
         # create a window
         self.window = tk.Tk()
         self.screen_width = self.window.winfo_screenwidth()

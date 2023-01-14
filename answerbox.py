@@ -77,6 +77,3 @@ class Answerbox:
     def kb_enter_shortcut(self, event):
         if event.keysym == "Return":
             self.check_ans()
-
-
-Answerbox()

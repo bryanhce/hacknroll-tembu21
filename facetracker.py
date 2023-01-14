@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import time
+from answerbox import *
+from gif import *
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
@@ -87,8 +89,13 @@ class FaceTracker():
           else:
             self.time_away = time.time() - self.start_time
             if (self.time_away > 5):
+              print("here")
               # here launch answer box and then if wrong launch the gif
-              print("meme")
+              # answeringbox = Answerbox()
+              # result = answeringbox.check_ans()
+              # while(not result):
+              #   result = answeringbox.check_ans()
+              #   pet(0, 0)
             
           if cv2.waitKey(1) & 0xFF == ord('q'):
               break
