@@ -87,6 +87,7 @@ class FaceTracker():
           else:
             self.time_away = time.time() - self.start_time
             if (self.time_away > 5):
+              # here launch answer box and then if wrong launch the gif
               print("meme")
             
           if cv2.waitKey(1) & 0xFF == ord('q'):
