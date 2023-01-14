@@ -70,12 +70,12 @@ class Textbox:
 
     def memorise_text(self):
         #parsing data
-        ques = self.textbox_ques.get('1.0', tk.END).replace("\n", "").replace("\s", "")
+        ques = self.textbox_ques.get('1.0', tk.END).replace("\n", "").lower().strip()
         if ques == "":
             messagebox.showerror(title="No proper value", message="You did not enter a question.")
             return 
 
-        ans = self.textbox_ans.get('1.0', tk.END).replace("\n", "").replace("\s", "")
+        ans = self.textbox_ans.get('1.0', tk.END).replace("\n", "").lower().strip()
         if ans == "":
             messagebox.showerror(title="No proper value", message="You did not enter an answer.")
             return
