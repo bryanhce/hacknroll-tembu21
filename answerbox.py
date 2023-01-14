@@ -36,16 +36,19 @@ class Answerbox:
         except json.decoder.JSONDecodeError:
             pass
 
-        #question label
-        number = random.randint(0, len(self.database_dict) - 1)
-        self.labelQues = tk.Label(self.root, text=self.database_dict.get(number, "help"), font=('Arial', 15), fg="black")
+        #question 
+        self.number = random.randint(0, len(self.database_dict) - 1)
+        self.questionText = self.database_dict.get(str(self.number), ["error, issue with database, restart application"])[0]
+        self.answerText = self.database_dict.get(str(self.number), ["", "err"])[1]
+        self.labelQues = tk.Label(self.root, text=self.questionText, \
+            font=('Arial', 15), fg="black", wraplength=350)
         self.labelQues.place(x=18, y=50)
 
-        #frame for textbox question
+        #frame for textbox ans
         border_colour = tk.Frame(self.root, background="black", borderwidth=1)
-        border_colour.pack(padx=20, pady=20)
+        border_colour.pack(padx=20, pady=70)
 
-        #textbox for question
+        #textbox for ans
         self.textbox = tk.Text(border_colour, height=3, font=("Arial", 16), bg="gray")
         self.textbox.bind("<KeyPress>", self.kb_enter_shortcut)
         self.textbox.pack(padx=1, pady=1)
@@ -58,11 +61,22 @@ class Answerbox:
         self.root.mainloop()
 
     def check_ans(self):
-        pass
+        answer = self.textbox.get('1.0', tk.END).replace("\n", "").lower().strip()
+        if answer == "":
+            messagebox.showerror(title="No proper value", message="You did not enter an answer.")
+            return False
+
+        if answer == self.answerText:
+            self.root.destroy()
+            return True
+        else:
+            messagebox.showerror(title="No proper value", message="Wrong answer, try again!")
+            return False
+
 
     def kb_enter_shortcut(self, event):
         if event.keysym == "Return":
-            pass
+            self.check_ans()
 
 
 Answerbox()
