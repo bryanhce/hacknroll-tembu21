@@ -2,8 +2,6 @@ import tkinter as tk
 import time
 import random
 from PIL import Image
-import math
-import datetime
 
 
 class pet():
