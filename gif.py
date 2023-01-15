@@ -165,4 +165,3 @@ class pet():
     def close_pet(self):
       self.window.destroy()
 
-pet(0, 0)

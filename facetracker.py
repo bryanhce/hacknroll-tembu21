@@ -87,18 +87,21 @@ class FaceTracker():
           _, frame = cap.read()
           face_frame = self.detect_faces(frame, face_cascade)
           if (face_frame) is not None:
+            # minus time instead
             self.time_away = 0
             self.start_time = time.time()
             isAnswer = False
+            print("looking at screen")
           else:
+            print("looking away from screen")
             self.time_away = time.time() - self.start_time
-            if (self.time_away > 3):
+            if (self.time_away > 6):
               print(self.time_away)
               if (not isAnswer):
                 p3 = Process(target = Answerbox)
                 isAnswer = True
+                # restart
                 p3.start()
-            
           if cv2.waitKey(1) & 0xFF == ord('q'):
               break
       cap.release()
