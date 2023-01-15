@@ -3,6 +3,8 @@ import numpy as np
 import time
 from answerbox import *
 from gif import *
+from multiprocessing import Process
+
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
@@ -80,17 +82,22 @@ class FaceTracker():
 
   def start(self):
       cap = cv2.VideoCapture(0)
+      isAnswer = False
       while True:
           _, frame = cap.read()
           face_frame = self.detect_faces(frame, face_cascade)
           if (face_frame) is not None:
             self.time_away = 0
             self.start_time = time.time()
+            isAnswer = False
           else:
             self.time_away = time.time() - self.start_time
-            if (self.time_away > 5):
-              print("here")
-              Answerbox()
+            if (self.time_away > 3):
+              print(self.time_away)
+              if (not isAnswer):
+                p3 = Process(target = Answerbox)
+                isAnswer = True
+                p3.start()
             
           if cv2.waitKey(1) & 0xFF == ord('q'):
               break
