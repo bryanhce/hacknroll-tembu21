@@ -4,9 +4,8 @@
 INSTRUCTIONS TO INSTALL:
 
 INSTALL THE FOLLOWING LIBRARIES THROUGH PIP:
-
 ```bash
-pip install cv2
+pip install opencv-python
 pip install numpy
 pip install Pillow
 ```
