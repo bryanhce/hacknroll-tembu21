@@ -88,6 +88,7 @@ class FaceTracker():
           face_frame = self.detect_faces(frame, face_cascade)
           if (face_frame) is not None:
             # minus time instead
+            cv2.imshow('my image', face_frame)
             self.time_away = 0
             self.start_time = time.time()
             isAnswer = False
