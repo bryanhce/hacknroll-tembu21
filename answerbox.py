@@ -66,6 +66,7 @@ class Answerbox:
 
         #run events
         self.root.mainloop()
+        self.r.after(10000, self.r.destroy())
 
     def check_ans(self):
         answer = self.textbox.get('1.0', tk.END).replace("\n", "").lower().strip()

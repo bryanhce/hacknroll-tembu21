@@ -18,9 +18,9 @@ class pet():
         self.duration = duration
 
         #to loop through gif array
-        self.gif_arr = [ \
-          "graphics/xw.gif", "graphics/DEv.gif", "graphics/idle.gif", \
-          "graphics/idle_to_sleep.gif", "graphics/Pvu.gif", "graphics/walking_negative.gif"]
+        self.gif_arr = [ "graphics/dog.gif", \
+          "graphics/xw.gif", "graphics/DEv.gif", \
+          "graphics/idle_to_sleep.gif", "graphics/Pvu.gif", "graphics/specs.gif",]
         self.gif_counter = count
 
         # finding attributes of placeholder image
@@ -165,4 +165,4 @@ class pet():
     def close_pet(self):
       self.window.destroy()
 
-# pet(0, 0)
+pet(0, 0)
