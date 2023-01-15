@@ -90,12 +90,7 @@ class FaceTracker():
             self.time_away = time.time() - self.start_time
             if (self.time_away > 5):
               print("here")
-              # here launch answer box and then if wrong launch the gif
-              # answeringbox = Answerbox()
-              # result = answeringbox.check_ans()
-              # while(not result):
-              #   result = answeringbox.check_ans()
-              #   pet(0, 0)
+              Answerbox()
             
           if cv2.waitKey(1) & 0xFF == ord('q'):
               break

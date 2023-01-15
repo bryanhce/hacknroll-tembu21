@@ -8,7 +8,9 @@ class pet():
   
     def __init__(self, x, y, duration=5, count=0):
         # create a window
-        self.window = tk.Tk()
+        self.w = tk.Tk()
+        self.window = tk.Toplevel(self.w)
+        self.w.attributes('-alpha', 0.0)
         self.screen_width = self.window.winfo_screenwidth()
         self.screen_height = self.window.winfo_screenheight()
         self.curr_dir_y = "Down"
@@ -84,8 +86,8 @@ class pet():
           # self.window.after(10000, self.window.attributes("-alpha", 1.0))
           # self.label.configure(image=self.new_img)
 
-        self.label.bind("<Button-1>", lambda e,:on_click_duplicate())
-        self.label.bind("<Double-Button-1>", lambda e,:on_click_disappear())
+        self.label.bind("<Button-1>", lambda e,:self.close_pet())
+        self.label.bind("<Double-Button-1>", lambda e,:self.close_pet())
 
         # give window to geometry manager (so it will appear)
         self.label.pack()
@@ -159,3 +161,8 @@ class pet():
     def bring_gif_back(self):
       self.window.attributes('-alpha', 1.0)
       self.window.after(10000, self.bring_gif_back)
+
+    def close_pet(self):
+      self.window.destroy()
+
+# pet(0, 0)

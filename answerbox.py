@@ -2,11 +2,18 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 import random
+import threading
+
+from gif import *
 
 class Answerbox:
 
     def __init__(self):
-        self.root = tk.Tk()
+        self.r = tk.Tk()
+
+        self.r.attributes('-alpha', 0.0)
+
+        self.root = tk.Toplevel(self.r)
 
         #adjust size of the popup window
         self.root.geometry("350x330")
@@ -64,16 +71,21 @@ class Answerbox:
         answer = self.textbox.get('1.0', tk.END).replace("\n", "").lower().strip()
         if answer == "":
             messagebox.showerror(title="No proper value", message="You did not enter an answer.")
-            return False
+            # return False
 
         if answer == self.answerText:
             self.root.destroy()
-            return True
+            # return True
         else:
-            messagebox.showerror(title="No proper value", message="Wrong answer, try again!")
-            return False
+            messagebox.showerror(title="Wrong answer", message="Wrong answer, try again!")
+            # return False
+            pet(0, 0)
+
 
 
     def kb_enter_shortcut(self, event):
         if event.keysym == "Return":
             self.check_ans()
+
+#for testing
+# Answerbox()
